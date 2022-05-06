@@ -10,6 +10,8 @@ public class MapGenerator : MonoBehaviour
 
     [SerializeField] private NodeSpawner nodeSpawner;
     [SerializeField] private CameraController mainCamera;
+    [SerializeField] private SnakeController snakeController;
+    [SerializeField] private GameplayManager gameplayManager;
 
     [SerializeField] private GameObject universePrefab;
 
@@ -17,7 +19,9 @@ public class MapGenerator : MonoBehaviour
     {
         Assert.IsNotNull(mainCamera);
         Assert.IsNotNull(nodeSpawner);
+        Assert.IsNotNull(snakeController);
         Assert.IsNotNull(universePrefab);
+        Assert.IsNotNull(gameplayManager);
     }
 
     private void Start()
@@ -33,5 +37,11 @@ public class MapGenerator : MonoBehaviour
 
         GameObject universeObject = Instantiate(universePrefab, mapMidPoint, Quaternion.identity);
         universeObject.transform.localScale *= mapRadius;
+
+        // setting up SnakeController
+        snakeController.Init(nodeSpawner.GetMaxNodeDistance());
+
+        // setting up GameplayManager
+        gameplayManager.Init(nodeSpawner.Nodes, nodeSpawner.GetMaxNodeDistance());
     }
 }
